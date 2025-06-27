@@ -1,11 +1,12 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import axios from 'axios'
 import { FaStar, FaArrowLeft, FaSearch } from 'react-icons/fa'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-export default function GaleriaPage() {
+// Extrae el componente que usa useSearchParams
+function GaleriaContent() {
   const [productos, setProductos] = useState<any[]>([])
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -109,5 +110,14 @@ export default function GaleriaPage() {
         )}
       </div>
     </div>
+  )
+}
+
+// Exporta la página usando Suspense
+export default function GaleriaPage() {
+  return (
+    <Suspense fallback={<div className="p-8">Cargando galería...</div>}>
+      <GaleriaContent />
+    </Suspense>
   )
 }
