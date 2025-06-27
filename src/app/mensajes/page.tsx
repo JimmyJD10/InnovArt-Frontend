@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, Suspense } from 'react'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import { FaUserCircle, FaPaperPlane } from 'react-icons/fa'
@@ -19,7 +19,7 @@ type Usuario = {
   rol: string
 }
 
-export default function MensajesPage() {
+function MensajesContent() {
   const searchParams = useSearchParams()
   const destinatarioId = searchParams.get('destinatarioId')
   const [user, setUser] = useState<Usuario | null>(null)
@@ -165,5 +165,13 @@ export default function MensajesPage() {
         .rounded-bl-sm { border-bottom-left-radius: 0.5rem !important; }
       `}</style>
     </div>
+  )
+}
+
+export default function MensajesPage() {
+  return (
+    <Suspense fallback={<div className="p-8">Cargando chat...</div>}>
+      <MensajesContent />
+    </Suspense>
   )
 }
