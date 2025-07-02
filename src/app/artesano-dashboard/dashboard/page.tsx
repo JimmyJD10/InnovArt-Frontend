@@ -9,7 +9,7 @@ export default function ArtesanoDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    axios.get('http://3.147.68.195:3001/api/artesano/summary', {
+    axios.get('http://172.31.15.139:3001/api/artesano/summary', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setStats(res.data))
