@@ -11,14 +11,14 @@ export default function Productos() {
   const [ubicacion, setUbicacion] = useState('');
 
   const fetchProductos = async () => {
-    const res = await axios.get('https://innovart-backend.onrender.com/api/products', {
+    const res = await axios.get('http://172.31.15.139:3001/api/products', {
       params: { categoria, ubicacion }
     });
     setProductos(res.data);
   };
 
   const handleCrear = async () => {
-    await axios.post('https://innovart-backend.onrender.com/api/products', {
+    await axios.post('http://172.31.15.139:3001/api/products', {
       nombre,
       descripcion,
       precio: parseFloat(precio)
