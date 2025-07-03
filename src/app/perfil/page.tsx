@@ -48,6 +48,7 @@ export default function PerfilPage() {
     if (!token) {
       setLoading(false);
       setUser(null);
+      router.replace('/login'); // Redirige automáticamente si no hay sesión
       return;
     }
     axios.get('http://3.147.68.195:3001/api/users/me', {
@@ -63,8 +64,9 @@ export default function PerfilPage() {
         localStorage.removeItem('user');
         setUser(null);
         setLoading(false);
+        router.replace('/login'); // Redirige si el token es inválido
       });
-  }, [])
+  }, [router])
 
   // Manejo de edición de campos
   const handleEditChange = (e: any) => {
@@ -115,21 +117,8 @@ export default function PerfilPage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh] bg-gradient-to-br from-white via-sky-100 to-blue-200">
-        <FaUserCircle size={80} className="text-blue-400 mb-6" />
-        <h2 className="text-2xl font-bold text-blue-900 mb-2">¡Debes iniciar sesión o registrarte!</h2>
-        <p className="text-blue-800 mb-6">Para ver tu perfil, primero crea una cuenta o inicia sesión.</p>
-        <div className="flex gap-4">
-          <Link href="/login">
-            <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-full shadow transition">Iniciar sesión</button>
-          </Link>
-          <Link href="/usuarios">
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-2 px-6 rounded-full shadow transition">Registrarse</button>
-          </Link>
-        </div>
-      </div>
-    )
+    // Ya no muestra mensaje, solo retorna null porque router.replace('/login') ya redirige
+    return null
   }
 
   // Parse campos JSON si existen
