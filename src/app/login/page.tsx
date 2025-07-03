@@ -28,7 +28,7 @@ export default function LoginPage() {
       return
     }
     try {
-      const res = await axios.post('http://172.31.15.139:3001/api/users/login', { correo: email, contraseña: password })
+      const res = await axios.post('http://3.147.68.195:3001/api/users/login', { correo: email, contraseña: password })
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('user', JSON.stringify(res.data.user))
       setLoggedUser(res.data.user)

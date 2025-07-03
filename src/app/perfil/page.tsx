@@ -45,7 +45,7 @@ export default function PerfilPage() {
       setUser(null);
       return;
     }
-    axios.get('http://172.31.15.139:3001/api/users/me', {
+    axios.get('http://3.147.68.195:3001/api/users/me', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {

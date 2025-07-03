@@ -11,8 +11,8 @@ export default function AutoCompleteSearch({ tipo, onSelect }: { tipo: 'producto
     setQuery(value)
     if (value.length > 1) {
       const url = tipo === 'productos'
-        ? `http://172.31.15.139:3001/api/products/search?q=${encodeURIComponent(value)}`
-        : `http://172.31.15.139:3001/api/users/search?q=${encodeURIComponent(value)}`
+        ? `http://3.147.68.195:3001/api/products/search?q=${encodeURIComponent(value)}`
+        : `http://3.147.68.195:3001/api/users/search?q=${encodeURIComponent(value)}`
       const res = await axios.get(url)
       setResults(res.data)
       setShow(true)

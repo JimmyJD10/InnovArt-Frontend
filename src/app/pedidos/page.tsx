@@ -10,7 +10,7 @@ export default function Pedidos() {
 
   const fetchPedidos = async () => {
     const token = localStorage.getItem('token');
-    const res = await axios.get('http://172.31.15.139:3001/api/pedidos', {
+    const res = await axios.get('http://3.147.68.195:3001/api/pedidos', {
       headers: { Authorization: `Bearer ${token}` }
     });
     setPedidos(res.data);
@@ -18,7 +18,7 @@ export default function Pedidos() {
 
   const handleCrear = async () => {
     const token = localStorage.getItem('token');
-    await axios.post('http://172.31.15.139:3001/api/pedidos', {
+    await axios.post('http://3.147.68.195:3001/api/pedidos', {
       clienteId: parseInt(clienteId),
       productoId: parseInt(productoId),
       cantidad: parseInt(cantidad)

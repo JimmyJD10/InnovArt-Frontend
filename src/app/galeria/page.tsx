@@ -13,7 +13,7 @@ function GaleriaContent() {
   const [busqueda, setBusqueda] = useState(searchParams.get('busqueda') || '')
 
   useEffect(() => {
-    axios.get('http://172.31.15.139:3001/api/products')
+    axios.get('http://3.147.68.195:3001/api/products')
       .then(res => setProductos(res.data))
   }, [])
 

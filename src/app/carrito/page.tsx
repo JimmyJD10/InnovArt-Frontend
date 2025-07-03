@@ -13,7 +13,7 @@ export default function CarritoPage() {
       setLoading(false)
       return
     }
-    axios.get('http://172.31.15.139:3001/api/pedidos/carrito', {
+    axios.get('http://3.147.68.195:3001/api/pedidos/carrito', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -30,7 +30,7 @@ export default function CarritoPage() {
 
   const eliminar = async (id: number) => {
     const token = localStorage.getItem('token')
-    await axios.delete(`http://172.31.15.139:3001/api/pedidos/carrito/${id}`, {
+    await axios.delete(`http://3.147.68.195:3001/api/pedidos/carrito/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     setCarrito(carrito.filter(i => i.id !== id))

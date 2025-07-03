@@ -77,7 +77,7 @@ export default function Usuarios() {
       }
       // Elimina campos vacíos
       Object.keys(data).forEach(k => (data[k] === '' || data[k] === null) && delete data[k])
-      await axios.post('http://172.31.15.139:3001/api/users', data)
+      await axios.post('http://3.147.68.195:3001/api/users', data)
       setSuccess('¡Registro exitoso! Ahora puedes iniciar sesión.')
       setForm({
         nombre_completo: '',

@@ -38,7 +38,7 @@ function MensajesContent() {
   // Cargar destinatario (artesano)
   useEffect(() => {
     if (destinatarioId) {
-      axios.get(`http://172.31.15.139:3001/api/users/${destinatarioId}`)
+      axios.get(`http://3.147.68.195:3001/api/users/${destinatarioId}`)
         .then(res => setDestinatario(res.data))
     }
   }, [destinatarioId])
@@ -46,7 +46,7 @@ function MensajesContent() {
   // Cargar mensajes entre usuario y destinatario
   useEffect(() => {
     if (user && destinatarioId) {
-      axios.get('http://172.31.15.139:3001/api/mensajes')
+      axios.get('http://3.147.68.195:3001/api/mensajes')
         .then(res => {
           // Filtra mensajes entre ambos usuarios (bidireccional)
           const conv = res.data.filter((m: Mensaje) =>
@@ -65,14 +65,14 @@ function MensajesContent() {
   // Enviar mensaje
   const handleEnviar = async () => {
     if (!nuevoMensaje.trim() || !user || !destinatarioId) return
-    await axios.post('http://172.31.15.139:3001/api/mensajes', {
+    await axios.post('http://3.147.68.195:3001/api/mensajes', {
       contenido: nuevoMensaje,
       remitenteId: user.id,
       destinatarioId: Number(destinatarioId)
     })
     setNuevoMensaje('')
     // Refresca mensajes
-    axios.get('http://172.31.15.139:3001/api/mensajes')
+    axios.get('http://3.147.68.195:3001/api/mensajes')
       .then(res => {
         const conv = res.data.filter((m: Mensaje) =>
           (m.remitenteId === user.id && m.destinatarioId === Number(destinatarioId)) ||

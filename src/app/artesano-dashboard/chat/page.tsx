@@ -8,13 +8,13 @@ export default function ChatArtesano() {
   const [destinatarioId, setDestinatarioId] = useState('')
 
   const fetchMensajes = async () => {
-    const res = await axios.get('http://172.31.15.139:3001/api/mensajes')
+    const res = await axios.get('http://3.147.68.195:3001/api/mensajes')
     setMensajes(res.data)
   }
 
   const handleEnviar = async () => {
     const token = localStorage.getItem('token')
-    await axios.post('http://172.31.15.139:3001/api/mensajes', {
+    await axios.post('http://3.147.68.195:3001/api/mensajes', {
       contenido,
       remitenteId: JSON.parse(localStorage.getItem('user') || '{}').id,
       destinatarioId: parseInt(destinatarioId)
