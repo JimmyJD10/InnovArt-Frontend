@@ -11,7 +11,7 @@ export default function MisProductos() {
 
   const fetchProductos = async () => {
     const token = localStorage.getItem('token')
-    const res = await axios.get('http://3.147.68.195:3001/api/products', {
+    const res = await axios.get('http://3.148.112.19:3001/api/products', {
       headers: { Authorization: `Bearer ${token}` }
     })
     setProductos(res.data)
@@ -21,7 +21,7 @@ export default function MisProductos() {
 
   const handleCrear = async () => {
     const token = localStorage.getItem('token')
-    await axios.post('http://3.147.68.195:3001/api/products', {
+    await axios.post('http://3.148.112.19:3001/api/products', {
       titulo, descripcion, precio: parseFloat(precio)
     }, { headers: { Authorization: `Bearer ${token}` } })
     setTitulo('')
@@ -39,7 +39,7 @@ export default function MisProductos() {
 
   const handleActualizar = async () => {
     const token = localStorage.getItem('token')
-    await axios.put(`http://3.147.68.195:3001/api/products/${editId}`, {
+    await axios.put(`http://3.148.112.19:3001/api/products/${editId}`, {
       titulo, descripcion, precio: parseFloat(precio)
     }, { headers: { Authorization: `Bearer ${token}` } })
     setEditId(null)
@@ -51,7 +51,7 @@ export default function MisProductos() {
 
   const handleEliminar = async (id: number) => {
     const token = localStorage.getItem('token')
-    await axios.delete(`http://3.147.68.195:3001/api/products/${id}`, {
+    await axios.delete(`http://3.148.112.19:3001/api/products/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     fetchProductos()

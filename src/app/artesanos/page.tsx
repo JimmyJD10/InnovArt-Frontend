@@ -38,7 +38,7 @@ export default function ArtesanosPage() {
   // Fetch artesanos con datos reales del backend
   useEffect(() => {
     setLoading(true)
-    axios.get('http://3.147.68.195:3001/api/users?rol=artesano')
+    axios.get('http://3.148.112.19:3001/api/users?rol=artesano')
       .then(res => {
         const data = res.data
           .filter((u: any) => u.rol === 'artesano')

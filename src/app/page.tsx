@@ -42,16 +42,16 @@ export default function Home() {
 
   // Cargar productos destacados, artesanos recomendados y reseñas destacadas
   useEffect(() => {
-    axios.get('http://172.31.15.139:3001/api/products?destacados=1')
+    axios.get('http://3.148.112.19:3001/api/products?destacados=1')
       .then(res => setProductosDestacados(res.data.slice(0, 8)))
       .catch(() => setProductosDestacados([]));
-    axios.get('http://172.31.15.139:3001/api/users?rol=artesano')
+    axios.get('http://3.148.112.19:3001/api/users?rol=artesano')
       .then(res => setArtesanosRecomendados(res.data.slice(0, 4)))
       .catch(() => setArtesanosRecomendados([]));
-    axios.get('http://172.31.15.139:3001/api/users?destacados=true')
+    axios.get('http://3.148.112.19:3001/api/users?destacados=true')
       .then(res => setArtesanosDestacados(res.data.slice(0, 8)))
       .catch(() => setArtesanosDestacados([]));
-    axios.get('http://172.31.15.139:3001/api/resenas?destacadas=1')
+    axios.get('http://3.148.112.19:3001/api/resenas?destacadas=1')
       .then(res => setResenasDestacadas(res.data.slice(0, 3)))
       .catch(() => setResenasDestacadas([]));
   }, []);

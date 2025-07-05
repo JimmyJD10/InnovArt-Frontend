@@ -20,7 +20,7 @@ export default function ProductoDetalle() {
   useEffect(() => {
     if (id) {
       setLoading(true)
-      axios.get(`http://localhost:3001/api/products/${id}`)
+      axios.get(`http://3.148.112.19:3001/api/products/${id}`)
         .then(async res => {
           setProducto(res.data)
           let imgs: string[] = []
@@ -31,10 +31,10 @@ export default function ProductoDetalle() {
           }
           setImagenes(imgs)
           if (res.data.usuarioId) {
-            const artesanoRes = await axios.get(`http://localhost:3001/api/users/${res.data.usuarioId}`)
+            const artesanoRes = await axios.get(`http://3.148.112.19:3001/api/users/${res.data.usuarioId}`)
             setArtesano(artesanoRes.data)
           }
-          const resenasRes = await axios.get(`http://localhost:3001/api/resenas?productoId=${id}`)
+          const resenasRes = await axios.get(`http://3.148.112.19:3001/api/resenas?productoId=${id}`)
           setResenas(resenasRes.data)
           setLoading(false)
         })
@@ -252,7 +252,7 @@ function ProductosRelacionados({ artesanoId, actualId }: { artesanoId?: number, 
   const [relacionados, setRelacionados] = useState<any[]>([])
   useEffect(() => {
     if (artesanoId) {
-      axios.get(`http://localhost:3001/api/products?usuarioId=${artesanoId}`)
+      axios.get(`http://3.148.112.19:3001/api/products?usuarioId=${artesanoId}`)
         .then(res => {
           setRelacionados(res.data.filter((p: any) => p.id !== actualId).slice(0, 4))
         })

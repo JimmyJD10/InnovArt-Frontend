@@ -8,7 +8,7 @@ export default function AdminUsuariosPage() {
 
   const fetchUsuarios = async () => {
     const token = localStorage.getItem('token');
-    const res = await axios.get('http://3.147.68.195:3001/api/users', {
+    const res = await axios.get('http://3.148.112.19:3001/api/users', {
       headers: { Authorization: `Bearer ${token}` }
     });
     setUsuarios(res.data);
@@ -19,7 +19,7 @@ export default function AdminUsuariosPage() {
   const handleEliminar = async (id: number) => {
     if (!window.confirm('¿Eliminar este usuario?')) return
     const token = localStorage.getItem('token')
-    await axios.delete(`http://3.147.68.195:3001/api/users/${id}`, {
+    await axios.delete(`http://3.148.112.19:3001/api/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     fetchUsuarios()
@@ -27,7 +27,7 @@ export default function AdminUsuariosPage() {
 
   const handleRol = async (id: number, rol: string) => {
     const token = localStorage.getItem('token')
-    await axios.put(`http://3.147.68.195:3001/api/users/${id}`, { rol }, {
+    await axios.put(`http://3.148.112.19:3001/api/users/${id}`, { rol }, {
       headers: { Authorization: `Bearer ${token}` }
     })
     fetchUsuarios()

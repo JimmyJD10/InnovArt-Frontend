@@ -8,7 +8,7 @@ export default function PerfilArtesano() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    axios.get('http://3.147.68.195:3001/api/users/me', {
+    axios.get('http://3.148.112.19:3001/api/users/me', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setUser(res.data))
@@ -20,7 +20,7 @@ export default function PerfilArtesano() {
 
   const handleSave = async () => {
     const token = localStorage.getItem('token')
-    await axios.put(`http://3.147.68.195:3001/api/users/${user.id}`, user, {
+    await axios.put(`http://3.148.112.19:3001/api/users/${user.id}`, user, {
       headers: { Authorization: `Bearer ${token}` }
     })
     setMsg('Perfil actualizado correctamente')

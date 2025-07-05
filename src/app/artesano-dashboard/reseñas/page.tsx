@@ -7,7 +7,7 @@ export default function ReseñasArtesano() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    axios.get('http://3.147.68.195:3001/api/resenas', {
+    axios.get('http://3.148.112.19:3001/api/resenas', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setResenas(res.data.filter((r: any) => r.artesanoId)))

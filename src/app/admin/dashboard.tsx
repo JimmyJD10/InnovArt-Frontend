@@ -27,7 +27,7 @@ export default function AdminDashboard() {
     const fetchSummary = async () => {
       const token = localStorage.getItem('token')
       try {
-        const res = await axios.get('http://3.147.68.195:3001/api/admin/summary', {
+        const res = await axios.get('http://3.148.112.19:3001/api/admin/summary', {
           headers: { Authorization: `Bearer ${token}` }
         })
         setSummary(res.data)

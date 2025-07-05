@@ -51,7 +51,7 @@ export default function PerfilPage() {
       router.replace('/login'); // Redirige automáticamente si no hay sesión
       return;
     }
-    axios.get('http://3.147.68.195:3001/api/users/me', {
+    axios.get('http://3.148.112.19:3001/api/users/me', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -79,7 +79,7 @@ export default function PerfilPage() {
     setMsg('')
     const token = localStorage.getItem('token')
     try {
-      await axios.put(`http://3.147.68.195:3001/api/users/${editUser.id}`, editUser, {
+      await axios.put(`http://3.148.112.19:3001/api/users/${editUser.id}`, editUser, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setUser(editUser)
