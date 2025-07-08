@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, Suspense } from 'react'
 import axios from 'axios'
 import { useSearchParams } from 'next/navigation'
 import { FaUserCircle, FaPaperPlane } from 'react-icons/fa'
+import { API_URL } from '../../services/api'
 
 type Mensaje = {
   id: number
@@ -38,7 +39,7 @@ function MensajesContent() {
   // Cargar destinatario (artesano)
   useEffect(() => {
     if (destinatarioId) {
-      axios.get(`http://3.148.112.19:3001/api/users/${destinatarioId}`)
+      axios.get(`${API_URL}/users/${destinatarioId}`)
         .then(res => setDestinatario(res.data))
     }
   }, [destinatarioId])
@@ -47,7 +48,7 @@ function MensajesContent() {
   const fetchMensajes = () => {
     if (user && destinatarioId) {
       const token = localStorage.getItem('token');
-      axios.get('http://3.148.112.19:3001/api/mensajes', {
+      axios.get(`${API_URL}/mensajes`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
@@ -77,7 +78,7 @@ function MensajesContent() {
   const handleEnviar = async () => {
     if (!nuevoMensaje.trim() || !user || !destinatarioId) return
     const token = localStorage.getItem('token');
-    await axios.post('http://3.148.112.19:3001/api/mensajes', {
+    await axios.post(`${API_URL}/mensajes`, {
       contenido: nuevoMensaje,
       remitenteId: user.id,
       destinatarioId: Number(destinatarioId)
