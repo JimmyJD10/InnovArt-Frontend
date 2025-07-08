@@ -43,12 +43,14 @@ function MensajesContent() {
     }
   }, [destinatarioId])
 
-  // Cargar mensajes entre usuario y destinatario
-  useEffect(() => {
+  // Función para cargar mensajes entre usuario y destinatario
+  const fetchMensajes = () => {
     if (user && destinatarioId) {
-      axios.get('http://3.148.112.19:3001/api/mensajes')
+      const token = localStorage.getItem('token');
+      axios.get('http://3.148.112.19:3001/api/mensajes', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(res => {
-          // Filtra mensajes entre ambos usuarios (bidireccional)
           const conv = res.data.filter((m: Mensaje) =>
             (m.remitenteId === user.id && m.destinatarioId == Number(destinatarioId)) ||
             (m.remitenteId == Number(destinatarioId) && m.destinatarioId === user.id)
@@ -60,29 +62,30 @@ function MensajesContent() {
           }, 100)
         })
     }
+  }
+
+  // Polling para recargar mensajes cada 2 segundos
+  useEffect(() => {
+    setLoading(true)
+    fetchMensajes()
+    const interval = setInterval(fetchMensajes, 2000)
+    return () => clearInterval(interval)
+    // eslint-disable-next-line
   }, [user, destinatarioId])
 
   // Enviar mensaje
   const handleEnviar = async () => {
     if (!nuevoMensaje.trim() || !user || !destinatarioId) return
+    const token = localStorage.getItem('token');
     await axios.post('http://3.148.112.19:3001/api/mensajes', {
       contenido: nuevoMensaje,
       remitenteId: user.id,
       destinatarioId: Number(destinatarioId)
-    })
+    }, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
     setNuevoMensaje('')
-    // Refresca mensajes
-    axios.get('http://3.148.112.19:3001/api/mensajes')
-      .then(res => {
-        const conv = res.data.filter((m: Mensaje) =>
-          (m.remitenteId === user.id && m.destinatarioId === Number(destinatarioId)) ||
-          (m.remitenteId === Number(destinatarioId) && m.destinatarioId === user.id)
-        )
-        setMensajes(conv)
-        setTimeout(() => {
-          chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' })
-        }, 100)
-      })
+    fetchMensajes()
   }
 
   if (!user) {
@@ -168,6 +171,7 @@ function MensajesContent() {
   )
 }
 
+// Exporta el componente principal como default
 export default function MensajesPage() {
   return (
     <Suspense fallback={<div className="p-8">Cargando chat...</div>}>

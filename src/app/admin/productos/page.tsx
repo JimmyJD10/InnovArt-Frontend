@@ -18,7 +18,10 @@ export default function AdminProductosPage() {
 
   const handleEliminar = async (id: number) => {
     if (!window.confirm('¿Eliminar este producto?')) return
-    await axios.delete(`http://3.148.112.19:3001/api/products/${id}`)
+    const token = localStorage.getItem('token')
+    await axios.delete(`http://3.148.112.19:3001/api/products/${id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     fetchProductos()
   }
 

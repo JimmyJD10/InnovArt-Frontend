@@ -27,7 +27,7 @@ export default function Usuarios() {
     metodos_pago_aceptados: '',
     ubicacion_precisa: '',
     certificaciones: '',
-    experiencia_anios: '',
+    experiencia_años: '',
     favoritos: ''
   })
   const [error, setError] = useState<string | null>(null)
@@ -42,6 +42,10 @@ export default function Usuarios() {
   const handleRolChange = (e: any) => {
     setForm({ ...form, rol: e.target.value })
   }
+
+  const handleFileChange = (e: any) => {
+    setForm({ ...form, foto_perfil: e.target.files[0] });
+  };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -70,14 +74,26 @@ export default function Usuarios() {
             data.redes_sociales = JSON.stringify({ facebook, instagram, whatsapp })
           }
         }
-        if (form.experiencia_anios) data.experiencia_anios = parseInt(form.experiencia_anios)
+        if (form.experiencia_años) data.experiencia_años = parseInt(form.experiencia_años)
       }
       if (form.rol === 'cliente' && form.favoritos) {
         data.favoritos = JSON.stringify(form.favoritos.split(',').map(s => s.trim()))
       }
       // Elimina campos vacíos
       Object.keys(data).forEach(k => (data[k] === '' || data[k] === null) && delete data[k])
-      await axios.post('http://3.148.112.19:3001/api/users', data)
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          if (key === 'foto_perfil' && value instanceof File) {
+            formData.append(key, value);
+          } else {
+            formData.append(key, String(value));
+          }
+        }
+      });
+      await axios.post('http://3.148.112.19:3001/api/users', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
       setSuccess('¡Registro exitoso! Ahora puedes iniciar sesión.')
       setForm({
         nombre_completo: '',
@@ -100,7 +116,7 @@ export default function Usuarios() {
         metodos_pago_aceptados: '',
         ubicacion_precisa: '',
         certificaciones: '',
-        experiencia_anios: '',
+        experiencia_años: '',
         favoritos: ''
       })
       setTimeout(() => router.push('/login'), 1800)
@@ -121,7 +137,7 @@ export default function Usuarios() {
           <p className="text-blue-700 mb-6 text-center text-base">
             Únete gratis y accede a productos únicos, conecta con artesanos y disfruta de beneficios exclusivos.
           </p>
-          <form className="flex flex-col gap-3 w-full" onSubmit={handleSubmit} autoComplete="off">
+          <form className="flex flex-col gap-3 w-full" onSubmit={handleSubmit} autoComplete="off" encType="multipart/form-data">
             <input name="nombre_completo" value={form.nombre_completo} onChange={handleChange} placeholder="Nombre completo *" className="border px-3 py-2 rounded focus:outline-blue-400" required />
             <input name="correo" type="email" value={form.correo} onChange={handleChange} placeholder="Correo electrónico *" className="border px-3 py-2 rounded focus:outline-blue-400" required />
             <input name="contraseña" type="password" value={form.contraseña} onChange={handleChange} placeholder="Contraseña *" className="border px-3 py-2 rounded focus:outline-blue-400" required minLength={8} />
@@ -141,7 +157,7 @@ export default function Usuarios() {
             <input name="direccion" value={form.direccion} onChange={handleChange} placeholder="Dirección (opcional)" className="border px-3 py-2 rounded focus:outline-blue-400" />
             <input name="ciudad" value={form.ciudad} onChange={handleChange} placeholder="Ciudad (opcional)" className="border px-3 py-2 rounded focus:outline-blue-400" />
             <input name="pais" value={form.pais} onChange={handleChange} placeholder="País (opcional)" className="border px-3 py-2 rounded focus:outline-blue-400" />
-            <input name="foto_perfil" value={form.foto_perfil} onChange={handleChange} placeholder="URL de foto de perfil (opcional)" className="border px-3 py-2 rounded focus:outline-blue-400" />
+            <input type="file" name="foto_perfil" accept="image/*" onChange={handleFileChange} />
             {/* Campos solo para artesano */}
             {form.rol === 'artesano' && (
               <div className="bg-blue-50 rounded-lg p-4 mt-2 mb-2 border border-blue-100">
@@ -156,7 +172,7 @@ export default function Usuarios() {
                 <input name="metodos_pago_aceptados" value={form.metodos_pago_aceptados} onChange={handleChange} placeholder="Métodos de pago (separados por coma)" className="border px-3 py-2 rounded w-full mb-2 focus:outline-blue-400" />
                 <input name="ubicacion_precisa" value={form.ubicacion_precisa} onChange={handleChange} placeholder="Ubicación precisa (lat,lng)" className="border px-3 py-2 rounded w-full mb-2 focus:outline-blue-400" />
                 <input name="certificaciones" value={form.certificaciones} onChange={handleChange} placeholder="Certificaciones (separadas por coma)" className="border px-3 py-2 rounded w-full mb-2 focus:outline-blue-400" />
-                <input name="experiencia_anios" type="number" value={form.experiencia_anios} onChange={handleChange} placeholder="Años de experiencia" className="border px-3 py-2 rounded w-full mb-2 focus:outline-blue-400" />
+                <input name="experiencia_años" type="number" value={form.experiencia_años} onChange={handleChange} placeholder="Años de experiencia" className="border px-3 py-2 rounded w-full mb-2 focus:outline-blue-400" />
               </div>
             )}
             {/* Campos solo para cliente */}

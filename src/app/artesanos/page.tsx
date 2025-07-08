@@ -4,6 +4,8 @@ import axios from 'axios'
 import Link from 'next/link'
 import { FaStar, FaSearch, FaBoxOpen, FaMapMarkerAlt, FaChevronLeft, FaChevronRight, FaArrowLeft } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
+import { API_URL } from '../../services/api'
+import StatusMessage from '../../components/StatusMessage'
 
 type Artesano = {
   id: number
@@ -33,12 +35,14 @@ export default function ArtesanosPage() {
   const [pagina, setPagina] = useState(1)
   const [porPagina] = useState(9)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter()
 
   // Fetch artesanos con datos reales del backend
   useEffect(() => {
     setLoading(true)
-    axios.get('http://3.148.112.19:3001/api/users?rol=artesano')
+    setError(null)
+    axios.get(`${API_URL}/users?rol=artesano`)
       .then(res => {
         const data = res.data
           .filter((u: any) => u.rol === 'artesano')
@@ -49,8 +53,9 @@ export default function ArtesanosPage() {
             total_reseñas: a.total_reseñas ?? Math.floor(Math.random() * 30) + 1,
           }))
         setArtesanos(data)
-        setLoading(false)
       })
+      .catch(() => setError('Error al cargar artesanos'))
+      .finally(() => setLoading(false))
   }, [])
 
   // Filtros y búsqueda
@@ -208,22 +213,20 @@ export default function ArtesanosPage() {
         </div>
         {/* Listado de artesanos */}
         <div className="flex-1">
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <span className="text-blue-900 font-semibold">Cargando artesanos...</span>
-            </div>
-          ) : mostrar.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-64 text-blue-800">
-              <span className="text-4xl mb-2">😕</span>
-              <span>No se encontraron artesanos con los filtros seleccionados.</span>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {mostrar.map(a => (
-                <ArtesanoCard key={a.id} a={a} />
-              ))}
-            </div>
-          )}
+          <StatusMessage loading={loading} error={error}>
+            {filtered.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-64 text-blue-800">
+                <span className="text-4xl mb-2">😕</span>
+                <span>No se encontraron artesanos con los filtros seleccionados.</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {mostrar.map(a => (
+                  <ArtesanoCard key={a.id} a={a} />
+                ))}
+              </div>
+            )}
+          </StatusMessage>
           {/* Paginación avanzada */}
           {totalPaginas > 1 && (
             <div className="flex justify-center mt-8 gap-2 items-center">

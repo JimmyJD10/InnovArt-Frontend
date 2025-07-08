@@ -42,7 +42,7 @@ export default function ArtesanoDashboard() {
       <div className="flex gap-4 mt-8">
         <Link href="/artesano-dashboard/productos" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Mis Productos</Link>
         <Link href="/artesano-dashboard/pedidos" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Pedidos Recibidos</Link>
-        <Link href="/artesano-dashboard/reseñas" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Mis Reseñas</Link>
+        <Link href="/artesano-dashboard/reviews" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Mis Reseñas</Link>
         <Link href="/artesano-dashboard/chat" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Chat</Link>
         <Link href="/artesano-dashboard/perfil" className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">Mi Perfil</Link>
       </div>

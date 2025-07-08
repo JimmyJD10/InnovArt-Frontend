@@ -17,47 +17,29 @@ export default function PublicacionesDestacadas() {
   const [current, setCurrent] = useState(0)
 
   useEffect(() => {
-    // Usando la API de Unsplash para obtener varias imágenes aleatorias
-    fetch('https://api.unsplash.com/photos/random?count=5&client_id=YOUR_UNSPLASH_ACCESS_KEY')
-      .then(res => res.json())
-      .then((data) => {
-        const pubs: Publicacion[] = [data].flat().map((item: any, idx: number) => ({
-          id: item.id || idx,
-          artesano: {
-            nombre: `Artesano ${idx + 1}`,
-            categoria: idx % 2 === 0 ? 'Cerámica' : 'Textiles',
-            fotoPerfil: item.user?.profile_image?.medium || item.urls.thumb
-          },
-          fotoArtesania: item.urls?.regular || item.urls?.small,
-          likes: item.likes || Math.floor(Math.random() * 200) + 10
-        }))
-        setPublicaciones(pubs)
-      })
-      .catch(() => {
-        // fallback si la API falla
-        setPublicaciones([
-          {
-            id: 1,
-            artesano: {
-              nombre: "Artesano 1",
-              categoria: "Cerámica",
-              fotoPerfil: "https://randomuser.me/api/portraits/men/1.jpg"
-            },
-            fotoArtesania: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-            likes: 120
-          },
-          {
-            id: 2,
-            artesano: {
-              nombre: "Artesano 2",
-              categoria: "Textiles",
-              fotoPerfil: "https://randomuser.me/api/portraits/women/2.jpg"
-            },
-            fotoArtesania: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-            likes: 98
-          }
-        ])
-      })
+    // Solo fallback local, sin Unsplash
+    setPublicaciones([
+      {
+        id: 1,
+        artesano: {
+          nombre: "Artesano 1",
+          categoria: "Cerámica",
+          fotoPerfil: "https://randomuser.me/api/portraits/men/1.jpg"
+        },
+        fotoArtesania: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
+        likes: 120
+      },
+      {
+        id: 2,
+        artesano: {
+          nombre: "Artesano 2",
+          categoria: "Textiles",
+          fotoPerfil: "https://randomuser.me/api/portraits/women/2.jpg"
+        },
+        fotoArtesania: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+        likes: 98
+      }
+    ])
   }, [])
 
   useEffect(() => {
@@ -122,3 +104,4 @@ export default function PublicacionesDestacadas() {
     </div>
   )
 }
+          

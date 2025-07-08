@@ -27,10 +27,17 @@ export default function AdminUsuariosPage() {
 
   const handleRol = async (id: number, rol: string) => {
     const token = localStorage.getItem('token')
-    await axios.put(`http://3.148.112.19:3001/api/users/${id}`, { rol }, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    fetchUsuarios()
+    // Busca el usuario actual
+    const usuario = usuarios.find(u => u.id === id)
+    if (!usuario) return
+    try {
+      await axios.put(`http://3.148.112.19:3001/api/users/${id}`, { ...usuario, rol }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      fetchUsuarios()
+    } catch (err) {
+      alert('Error al cambiar el rol')
+    }
   }
 
   const filtrados = usuarios.filter(u =>

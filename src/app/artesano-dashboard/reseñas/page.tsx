@@ -6,12 +6,10 @@ export default function ReseñasArtesano() {
   const [resenas, setResenas] = useState<any[]>([])
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios.get('http://3.148.112.19:3001/api/resenas', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => setResenas(res.data.filter((r: any) => r.artesanoId)))
-  }, [])
+    axios.get('http://3.148.112.19:3001/api/reviews?artesanoId=' + user.id)
+      .then(res => setResenas(res.data))
+      .catch(() => setResenas([]))
+  }, [user])
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
@@ -23,6 +21,9 @@ export default function ReseñasArtesano() {
           </li>
         ))}
       </ul>
+    </div>
+  )
+}
     </div>
   )
 }

@@ -5,6 +5,8 @@ import axios from 'axios'
 import Link from 'next/link'
 import { FaStar, FaBoxOpen, FaWhatsapp, FaEnvelope, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
+const API_URL = 'http://3.148.112.19:3001/api'
+
 export default function ProductoDetalle() {
   const params = useParams()
   const router = useRouter()
@@ -16,11 +18,15 @@ export default function ProductoDetalle() {
   const [resenas, setResenas] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showLightbox, setShowLightbox] = useState(false)
+  const [calificacion, setCalificacion] = useState(0)
+  const [comentario, setComentario] = useState('')
+  const [msg, setMsg] = useState('')
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (id) {
       setLoading(true)
-      axios.get(`http://3.148.112.19:3001/api/products/${id}`)
+      axios.get(`${API_URL}/products/${id}`)
         .then(async res => {
           setProducto(res.data)
           let imgs: string[] = []
@@ -34,8 +40,9 @@ export default function ProductoDetalle() {
             const artesanoRes = await axios.get(`http://3.148.112.19:3001/api/users/${res.data.usuarioId}`)
             setArtesano(artesanoRes.data)
           }
-          const resenasRes = await axios.get(`http://3.148.112.19:3001/api/resenas?productoId=${id}`)
-          setResenas(resenasRes.data)
+          axios.get(`${API_URL}/reviews?productoId=${id}`)
+            .then(res => setResenas(res.data))
+            .catch(() => setResenas([]))
           setLoading(false)
         })
         .catch(() => setLoading(false))
@@ -67,6 +74,40 @@ export default function ProductoDetalle() {
   const estado = producto.estado || 'disponible'
   const handlePrev = () => setImgActual((imgActual - 1 + imagenes.length) % imagenes.length)
   const handleNext = () => setImgActual((imgActual + 1) % imagenes.length)
+
+  // Reemplaza la función handleEnviarReseña por una implementación real:
+  async function handleEnviarReseña(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    setMsg('');
+    setError(null);
+    try {
+      const token = localStorage.getItem('token');
+      // Asegúrate de tener el usuario autenticado
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!user?.id) {
+        setError('Debes iniciar sesión para dejar una reseña');
+        return;
+      }
+      await axios.post(`${API_URL}/reviews`, {
+        productoId: producto.id,
+        artesanoId: producto.usuarioId,
+        clienteId: user.id,
+        calificacion,
+        comentario
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setMsg('¡Gracias por tu reseña!');
+      setCalificacion(0);
+      setComentario('');
+      // Recargar reseñas
+      axios.get(`${API_URL}/reviews?productoId=${producto.id}`)
+        .then(res => setResenas(res.data))
+        .catch(() => setResenas([]));
+    } catch (err: any) {
+      setError('Error al enviar reseña');
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -234,6 +275,25 @@ export default function ProductoDetalle() {
       </div>
       {/* Productos relacionados */}
       <ProductosRelacionados artesanoId={artesano?.id} actualId={producto.id} />
+      {/* Calificación y reseña */}
+      <div className="bg-white/90 rounded-xl shadow p-6 mb-8">
+        <h2 className="text-xl font-bold text-blue-900 mb-4">Califica y deja una reseña</h2>
+        <div className="flex items-center gap-1">
+          {[1,2,3,4,5].map(i => (
+            <FaStar
+              key={i}
+              className={i <= calificacion ? 'text-yellow-500 cursor-pointer' : 'text-gray-300 cursor-pointer'}
+              onClick={() => setCalificacion(i)}
+            />
+          ))}
+        </div>
+        <textarea value={comentario} onChange={e => setComentario(e.target.value)} placeholder="Escribe tu reseña..." className="w-full p-2 border border-blue-200 rounded-md mt-2 resize-none h-20"></textarea>
+        <button onClick={handleEnviarReseña} className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md font-semibold transition-all mt-2">
+          Enviar reseña
+        </button>
+        {msg && <div className="text-green-700 mt-2">{msg}</div>}
+        {error && <div className="text-red-700 mt-2">{error}</div>}
+      </div>
       <style jsx>{`
         .animate-pulse {
           animation: pulse 1.2s infinite;

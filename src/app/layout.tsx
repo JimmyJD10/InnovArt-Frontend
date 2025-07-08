@@ -1,4 +1,5 @@
 import './globals.css'
+import Header from './components/Header'
 
 export const metadata = {
   title: 'Next.js',
@@ -13,7 +14,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        {/* Si tienes un Header global, inclúyelo aquí */}
+        <Header />
         <main className="min-h-screen">{children}</main>
       </body>
     </html>

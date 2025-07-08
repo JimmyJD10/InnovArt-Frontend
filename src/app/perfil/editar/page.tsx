@@ -12,7 +12,7 @@ export default function EditarPerfil() {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (!token) {
-      router.push('/login')
+      // No redirigir aquí, dejar que el usuario vea el login
       return
     }
     axios.get('http://3.148.112.19:3001/api/users/me', {
@@ -22,27 +22,43 @@ export default function EditarPerfil() {
         setUser(res.data)
         setLoading(false)
       })
-      .catch(() => {
+      .catch(err => {
         setLoading(false)
-        router.push('/login')
+        if (err.response && err.response.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          if (typeof window !== 'undefined') {
+            window.location.href = '/login';
+          }
+        }
       })
-  }, [router])
+  }, [])
 
   const handleChange = (e: any) => {
     setUser({ ...user, [e.target.name]: e.target.value })
   }
 
+  const handleFileChange = (e: any) => {
+    setUser({ ...user, foto_perfil: e.target.files[0] });
+  };
+
   const handleSave = async () => {
-    const token = localStorage.getItem('token')
-    try {
-      await axios.put(`http://3.148.112.19:3001/api/users/${user.id}`, user, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      setMsg('Perfil actualizado correctamente')
-      localStorage.setItem('user', JSON.stringify(user))
-    } catch {
-      setMsg('Error al actualizar perfil')
-    }
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    Object.entries(user).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        if (value instanceof Blob) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, String(value));
+        }
+      }
+    });
+    await axios.put(`http://3.148.112.19:3001/api/users/${user.id}`, formData, {
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
+    });
+    setMsg('Perfil actualizado correctamente')
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   if (loading) return <div className="p-8">Cargando...</div>
@@ -66,6 +82,7 @@ export default function EditarPerfil() {
             <input name="especialidades" value={user.especialidades || ''} onChange={handleChange} placeholder="Especialidades (separadas por coma)" className="border px-2 py-1" />
           </>
         )}
+        <input type="file" name="foto_perfil" accept="image/*" onChange={handleFileChange} />
         <button onClick={handleSave} className="bg-blue-700 text-white px-4 py-2 rounded">Guardar cambios</button>
         {msg && <div className="text-green-700 mt-2">{msg}</div>}
       </div>

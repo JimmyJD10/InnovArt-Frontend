@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { API_URL } from '../../services/api'
 
 export default function AutoCompleteSearch({ tipo, onSelect }: { tipo: 'productos' | 'artesanos', onSelect: (item: any) => void }) {
   const [query, setQuery] = useState('')
@@ -11,8 +12,8 @@ export default function AutoCompleteSearch({ tipo, onSelect }: { tipo: 'producto
     setQuery(value)
     if (value.length > 1) {
       const url = tipo === 'productos'
-        ? `http://3.148.112.19:3001/api/products/search?q=${encodeURIComponent(value)}`
-        : `http://3.148.112.19:3001/api/users/search?q=${encodeURIComponent(value)}`
+        ? `${API_URL}/products/search?q=${encodeURIComponent(value)}`
+        : `${API_URL}/users/search?q=${encodeURIComponent(value)}`
       const res = await axios.get(url)
       setResults(res.data)
       setShow(true)
@@ -41,7 +42,7 @@ export default function AutoCompleteSearch({ tipo, onSelect }: { tipo: 'producto
               className="px-3 py-2 hover:bg-blue-100 cursor-pointer"
               onClick={() => { onSelect(item); setShow(false); setQuery('') }}
             >
-              {item.nombre || item.nombre_completo}
+              {item.nombre_completo || item.nombre || item.titulo}
             </li>
           ))}
         </ul>

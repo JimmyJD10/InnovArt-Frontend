@@ -8,6 +8,7 @@ import AyudaBurbuja from '../components/AyudaBurbuja'
 import { useRouter, usePathname } from 'next/navigation'
 import axios from 'axios'
 import AutoCompleteSearch from './components/AutoCompleteSearch'
+import { API_URL } from '../services/api'
 
 export default function Home() {
   const [loggedUser, setLoggedUser] = useState<any>(null);
@@ -51,7 +52,7 @@ export default function Home() {
     axios.get('http://3.148.112.19:3001/api/users?destacados=true')
       .then(res => setArtesanosDestacados(res.data.slice(0, 8)))
       .catch(() => setArtesanosDestacados([]));
-    axios.get('http://3.148.112.19:3001/api/resenas?destacadas=1')
+    axios.get(`${API_URL}/reviews?destacadas=1`)
       .then(res => setResenasDestacadas(res.data.slice(0, 3)))
       .catch(() => setResenasDestacadas([]));
   }, []);
@@ -116,23 +117,26 @@ export default function Home() {
               </button>
             </div>
           </div>
-          <button
-            onClick={() => router.push('/perfil')}
-            className="flex items-center text-white font-semibold hover:text-blue-300 transition-colors bg-transparent border-none outline-none cursor-pointer"
-            style={{ background: 'none', border: 'none', padding: 0 }}
-          >
-            {loggedUser ? (
-              <>
-                {loggedUser.nombre_completo}
-                <FaUserCircle className="ml-2" size={24} />
-              </>
-            ) : (
-              <>
-                PERFIL
-                <FaUserCircle className="ml-2" size={24} />
-              </>
-            )}
-          </button>
+          {/* Perfil/NOMBRE */}
+          {loggedUser ? (
+            <Link
+              href="/perfil"
+              className="flex items-center text-white font-semibold hover:text-blue-300 transition-colors bg-transparent border-none outline-none cursor-pointer"
+              style={{ background: 'none', border: 'none', padding: 0 }}
+            >
+              {loggedUser.nombre_completo}
+              <FaUserCircle className="ml-2" size={24} />
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="flex items-center text-white font-semibold hover:text-blue-300 transition-colors bg-transparent border-none outline-none cursor-pointer"
+              style={{ background: 'none', border: 'none', padding: 0 }}
+            >
+              PERFIL
+              <FaUserCircle className="ml-2" size={24} />
+            </Link>
+          )}
           {loggedUser && (
             <button
               onClick={handleLogout}

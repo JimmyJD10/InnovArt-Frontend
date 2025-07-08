@@ -1,15 +1,57 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function NotificacionesPage() {
-  const [notificaciones, setNotificaciones] = useState([
-    { mensaje: "Tienes un nuevo mensaje de Juan", leido: false },
-    { mensaje: "Tu pedido #123 fue enviado", leido: true }
-  ])
+  const [notificaciones, setNotificaciones] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<any>(null)
 
-  const marcarLeido = (idx: number) => {
-    setNotificaciones(notificaciones.map((n, i) => i === idx ? { ...n, leido: true } : n))
+  useEffect(() => {
+    const u = localStorage.getItem('user')
+    if (u) setUser(JSON.parse(u))
+  }, [])
+
+  useEffect(() => {
+    const fetchNotificaciones = async () => {
+      if (!user) return
+      setLoading(true)
+      const token = localStorage.getItem('token')
+      // Mensajes recibidos
+      const mensajesRes = await axios.get('http://3.148.112.19:3001/api/mensajes?destinatarioId=' + user.id, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      // Puedes agregar aquí otras notificaciones (pedidos, reseñas, etc.)
+      const mensajes = mensajesRes.data.map((m: any) => ({
+        tipo: 'mensaje',
+        mensaje: `Nuevo mensaje de usuario #${m.remitenteId}: "${m.contenido}"`,
+        leido: false,
+        id: m.id,
+        remitenteId: m.remitenteId
+      }))
+      // Ejemplo para reviews (opcional):
+      // const reviewsRes = await axios.get('http://3.148.112.19:3001/api/reviews?artesanoId=' + user.id, {
+      //   headers: { Authorization: `Bearer ${token}` }
+      // })
+      // const reviews = reviewsRes.data.map((r: any) => ({
+      //   tipo: 'review',
+      //   mensaje: `Nueva reseña de usuario #${r.clienteId}: "${r.comentario}"`,
+      //   leido: false,
+      //   id: r.id,
+      //   clienteId: r.clienteId
+      // }))
+      // setNotificaciones([...mensajes, ...reviews])
+      setNotificaciones(mensajes)
+      setLoading(false)
+    }
+    if (user) fetchNotificaciones()
+  }, [user])
+
+  const marcarLeido = (id: number) => {
+    setNotificaciones(notificaciones.map(n => n.id === id ? { ...n, leido: true } : n))
   }
+
+  if (loading) return <div className="p-8">Cargando notificaciones...</div>
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
@@ -19,10 +61,20 @@ export default function NotificacionesPage() {
       ) : (
         <ul>
           {notificaciones.map((n, idx) => (
-            <li key={idx} className={`mb-2 flex justify-between items-center ${n.leido ? 'text-gray-500' : 'text-blue-900 font-semibold'}`}>
-              <span>{n.mensaje}</span>
+            <li key={n.id} className={`mb-2 flex justify-between items-center ${n.leido ? 'text-gray-500' : 'text-blue-900 font-semibold'}`}>
+              <span>
+                {n.mensaje}
+                {n.tipo === 'mensaje' && (
+                  <a
+                    href={`/mensajes?destinatarioId=${n.remitenteId}`}
+                    className="ml-2 text-blue-700 underline"
+                  >
+                    Ver chat
+                  </a>
+                )}
+              </span>
               {!n.leido && (
-                <button onClick={() => marcarLeido(idx)} className="text-blue-600 hover:underline text-sm">Marcar como leído</button>
+                <button onClick={() => marcarLeido(n.id)} className="text-blue-600 hover:underline text-sm">Marcar como leído</button>
               )}
             </li>
           ))}

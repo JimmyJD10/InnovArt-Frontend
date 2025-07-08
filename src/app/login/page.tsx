@@ -33,7 +33,8 @@ export default function LoginPage() {
       localStorage.setItem('user', JSON.stringify(res.data.user))
       setLoggedUser(res.data.user)
       setLoading(false)
-      router.push('/')
+      // Redirigir a perfil directamente si quieres
+      router.push('/perfil')
     } catch (err: any) {
       setError(err.response?.data?.mensaje || 'Error de login')
       setLoading(false)
@@ -52,7 +53,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl px-8 py-10 flex flex-col items-center border border-blue-100 max-w-md w-full">
           <FaCheckCircle size={48} className="text-green-600 mb-4" />
           <h2 className="text-2xl font-bold text-blue-900 mb-2">Ya has iniciado sesión</h2>
-          <div className="text-blue-800 mb-4">{loggedUser.nombre_completo || loggedUser.nombre}</div>
+          <div className="text-blue-800 mb-4">{loggedUser.nombre_completo}</div>
           <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-semibold transition">Cerrar sesión</button>
         </div>
       </div>

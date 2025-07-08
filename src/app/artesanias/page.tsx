@@ -10,12 +10,12 @@ export default function Artesanias() {
   const [artesanoId, setArtesanoId] = useState('');
 
   const fetchResenas = async () => {
-    const res = await axios.get('http://3.148.112.19:3001/api/resenas');
+    const res = await axios.get('http://3.148.112.19:3001/api/reviews');
     setResenas(res.data);
   };
 
   const handleCrear = async () => {
-    await axios.post('http://3.148.112.19:3001/api/resenas', {
+    await axios.post('http://3.148.112.19:3001/api/reviews', {
       comentario,
       calificacion: parseInt(calificacion),
       clienteId: parseInt(clienteId),

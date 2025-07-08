@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import Link from 'next/link'
 import { FaStar, FaMapMarkerAlt, FaWhatsapp, FaEnvelope, FaBoxOpen } from 'react-icons/fa'
+import { API_URL } from '../../../services/api'
 
 export default function ArtesanoPerfil() {
   const params = useParams()
@@ -12,18 +13,23 @@ export default function ArtesanoPerfil() {
   const [artesano, setArtesano] = useState<any>(null)
   const [productos, setProductos] = useState<any[]>([])
   const [resenas, setResenas] = useState<any[]>([])
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://3.148.112.19:3001/api/users/${id}`)
-        .then(res => setArtesano(res.data));
-      axios.get(`http://3.148.112.19:3001/api/products?usuarioId=${id}`)
-        .then(res => setProductos(res.data));
-      axios.get(`http://3.148.112.19:3001/api/resenas?artesanoId=${id}`)
-        .then(res => setResenas(res.data));
+      axios.get(`${API_URL}/users/${id}`)
+        .then(res => setArtesano(res.data))
+        .catch(() => setError('Artesano no encontrado'))
+      axios.get(`${API_URL}/products?usuarioId=${id}`)
+        .then(res => setProductos(res.data))
+        .catch(() => setProductos([]))
+      axios.get(`${API_URL}/reviews?artesanoId=${id}`)
+        .then(res => setResenas(res.data))
+        .catch(() => setResenas([]))
     }
   }, [id])
 
+  if (error) return <div className="p-6 text-red-700">{error}</div>
   if (!artesano) return <div className="p-6">Cargando...</div>
 
   // Parse campos
