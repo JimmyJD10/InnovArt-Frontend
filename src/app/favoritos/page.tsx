@@ -18,8 +18,12 @@ export default function FavoritosPage() {
         <ul>
           {favoritos.map((item) => (
             <li key={item.id} className="mb-2 flex justify-between items-center">
-              <span>{item.nombre}</span>
-              <button onClick={() => eliminar(item.id)} className="text-red-600 hover:underline">Eliminar</button>
+              <div className="p-4 border rounded-lg shadow-sm transition-all duration-300 ease-in-out transform hover:scale-105">
+                <span className="block text-lg font-semibold text-blue-800">{item.nombre}</span>
+                <button onClick={() => eliminar(item.id)} className="mt-2 px-3 py-1 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-500 transition-all duration-300 ease-in-out">
+                  Eliminar
+                </button>
+              </div>
             </li>
           ))}
         </ul>

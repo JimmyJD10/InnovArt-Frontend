@@ -25,16 +25,16 @@ export default function SoportePage() {
         value={nombre}
         onChange={e => setNombre(e.target.value)}
         placeholder="Tu nombre"
-        className="border rounded px-3 py-2 w-full mb-2"
+        className="border rounded px-3 py-2 w-full mb-2 focus:ring-2 focus:ring-blue-600 transition"
       />
       <input
         value={correo}
         onChange={e => setCorreo(e.target.value)}
         placeholder="Tu correo"
-        className="border rounded px-3 py-2 w-full mb-2"
+        className="border rounded px-3 py-2 w-full mb-2 focus:ring-2 focus:ring-blue-600 transition"
         type="email"
       />
-      <select value={tipo} onChange={e => setTipo(e.target.value)} className="border rounded px-3 py-2 w-full mb-2">
+      <select value={tipo} onChange={e => setTipo(e.target.value)} className="border rounded px-3 py-2 w-full mb-2 focus:ring-2 focus:ring-blue-600 transition">
         <option value="problema">Problema técnico</option>
         <option value="reporte">Reporte de usuario/producto</option>
         <option value="sugerencia">Sugerencia</option>
@@ -44,7 +44,7 @@ export default function SoportePage() {
         value={mensaje}
         onChange={e => setMensaje(e.target.value)}
         placeholder="Describe tu problema, reporte o sugerencia"
-        className="border rounded px-3 py-2 w-full mb-2"
+        className="border rounded px-3 py-2 w-full mb-2 focus:ring-2 focus:ring-blue-600 transition"
         rows={5}
       />
       <button onClick={handleEnviar} className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-6 rounded-full shadow transition">Enviar</button>

@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState, Suspense } from 'react'
 import axios from 'axios'
-import { FaStar, FaArrowLeft, FaSearch } from 'react-icons/fa'
+import { FaStar, FaSearch } from 'react-icons/fa'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { API_URL } from '../../services/api'
@@ -40,47 +40,12 @@ function GaleriaContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-sky-100 to-blue-200">
-      {/* Barra de navegación anclada */}
-      <nav className="w-full bg-blue-900 shadow-lg flex items-center justify-between px-8 py-4 z-30 sticky top-0 left-0">
-        <div className="flex items-center gap-6">
-          <button
-            onClick={() => router.back()}
-            className="text-white font-semibold hover:text-blue-300 transition-colors flex items-center gap-2 bg-transparent border-none outline-none"
-            style={{ background: 'none', border: 'none', padding: 0 }}
-            title="Volver"
-          >
-            <FaArrowLeft className="mr-1" /> Volver
-          </button>
-          <Link href="/" className="text-white font-semibold hover:text-blue-300 transition-colors">INICIO</Link>
-          <Link href="/artesanos" className="text-white font-semibold hover:text-blue-300 transition-colors">ARTESANOS</Link>
-          <Link href="/galeria" className="text-white font-semibold hover:text-blue-300 transition-colors">GALERÍA</Link>
-          <Link href="/contacto" className="text-white font-semibold hover:text-blue-300 transition-colors">CONTACTO</Link>
-        </div>
-        {/* Barra de búsqueda igual a la de inicio */}
-        <div className="flex bg-white/90 rounded-full shadow px-6 py-2 items-center max-w-lg w-full ml-8">
-          <FaSearch className="text-blue-400 mr-2" />
-          <input
-            type="text"
-            placeholder="Buscar artesanías, productos o artesanos..."
-            value={busqueda}
-            onChange={e => setBusqueda(e.target.value)}
-            className="flex-1 border-none outline-none bg-transparent text-blue-900"
-            onKeyDown={e => e.key === 'Enter' && handleBusqueda()}
-          />
-          <button
-            onClick={handleBusqueda}
-            className="ml-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-1 rounded-full font-semibold transition"
-          >
-            Buscar
-          </button>
-        </div>
-      </nav>
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-4 text-blue-900">Galería de Artesanías</h2>
         <StatusMessage loading={loading} error={error}>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {productosFiltrados.map(p => (
-              <div key={p.id} className="bg-white rounded-xl shadow p-4 flex flex-col items-center">
+              <div key={p.id} className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center transition-transform transform hover:scale-105">
                 <img src={p.imagen || '/default-artesania.png'} alt={p.titulo} className="h-32 w-full object-cover rounded mb-2" />
                 <div className="font-bold text-blue-900">{p.titulo}</div>
                 {/* Descripción */}

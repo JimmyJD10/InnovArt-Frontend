@@ -69,18 +69,6 @@ export default function Productos() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-sky-100 to-blue-200">
-      {/* Barra de navegación */}
-      <nav className="w-full bg-blue-900 shadow-lg flex items-center justify-between px-10 py-4 z-30 sticky top-0 left-0 mb-8">
-        <div className="flex items-center gap-12">
-          <img src="/logo_innovart_white.png" alt="Logo InnovArt" className="h-12 w-auto drop-shadow-lg" />
-          <div className="flex gap-10">
-            <Link href="/" className="text-white font-semibold hover:text-blue-300 transition-colors">INICIO</Link>
-            <Link href="/artesanos" className="text-white font-semibold hover:text-blue-300 transition-colors">ARTESANOS</Link>
-            <Link href="/galeria" className="text-white font-semibold hover:text-blue-300 transition-colors">GALERÍA</Link>
-            <Link href="/contacto" className="text-white font-semibold hover:text-blue-300 transition-colors">CONTACTO</Link>
-          </div>
-        </div>
-      </nav>
       <div className="max-w-7xl mx-auto px-4 py-6">
         <h2 className="text-3xl font-bold text-blue-900 mb-6 flex items-center gap-3">
           <FaBoxOpen className="text-blue-700" /> Productos disponibles
@@ -153,7 +141,7 @@ export default function Productos() {
             ) : (
               <>
                 {productos.map((p) => (
-                  <div key={p.id} className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center hover:shadow-blue-200 transition-shadow">
+                  <div key={p.id} className="bg-white rounded-xl shadow-lg p-4 flex flex-col items-center transition-transform transform hover:scale-105">
                     <img src={p.imagen || '/default-artesania.png'} alt={p.titulo} className="h-32 w-full object-cover rounded mb-2" />
                     <div className="font-bold text-blue-900 text-lg">{p.titulo}</div>
                     <div className="text-blue-800 text-sm mb-1">{p.descripcion}</div>

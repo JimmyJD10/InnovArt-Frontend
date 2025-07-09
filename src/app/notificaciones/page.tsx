@@ -59,26 +59,28 @@ export default function NotificacionesPage() {
       {notificaciones.length === 0 ? (
         <div className="text-blue-700">No tienes notificaciones nuevas.</div>
       ) : (
-        <ul>
+        <div className="space-y-4">
           {notificaciones.map((n, idx) => (
-            <li key={n.id} className={`mb-2 flex justify-between items-center ${n.leido ? 'text-gray-500' : 'text-blue-900 font-semibold'}`}>
-              <span>
-                {n.mensaje}
-                {n.tipo === 'mensaje' && (
-                  <a
-                    href={`/mensajes?destinatarioId=${n.remitenteId}`}
-                    className="ml-2 text-blue-700 underline"
-                  >
-                    Ver chat
-                  </a>
+            <div key={n.id} className={`p-4 rounded-lg shadow-md transition-all duration-300 ease-in-out transform ${n.leido ? 'bg-gray-100' : 'bg-blue-50'} ${idx === 0 ? 'animate-fadeIn' : ''}`}>
+              <div className={`flex justify-between items-center ${n.leido ? 'text-gray-500' : 'text-blue-900 font-semibold'}`}>
+                <span>
+                  {n.mensaje}
+                  {n.tipo === 'mensaje' && (
+                    <a
+                      href={`/mensajes?destinatarioId=${n.remitenteId}`}
+                      className="ml-2 text-blue-700 underline"
+                    >
+                      Ver chat
+                    </a>
+                  )}
+                </span>
+                {!n.leido && (
+                  <button onClick={() => marcarLeido(n.id)} className="text-blue-600 hover:underline text-sm">Marcar como leído</button>
                 )}
-              </span>
-              {!n.leido && (
-                <button onClick={() => marcarLeido(n.id)} className="text-blue-600 hover:underline text-sm">Marcar como leído</button>
-              )}
-            </li>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
       <div className="mt-8 text-blue-700">
         <b>¿Qué son?</b> Aquí verás avisos de mensajes, pedidos, reseñas y novedades importantes.

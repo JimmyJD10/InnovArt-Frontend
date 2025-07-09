@@ -5,29 +5,6 @@ import { FaFacebook, FaInstagram, FaWhatsapp, FaEnvelope, FaPhone, FaMapMarkerAl
 export default function ContactoPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-sky-100 to-blue-200">
-      {/* Barra de navegación */}
-      <nav className="w-full bg-blue-900 shadow-lg flex items-center justify-between px-10 py-4 z-30 sticky top-0 left-0 mb-8">
-        <div className="flex items-center gap-12">
-          <img src="/logo_innovart_white.png" alt="Logo InnovArt" className="h-12 w-auto drop-shadow-lg" />
-          <div className="flex gap-10">
-            <Link href="/" className="text-white font-semibold hover:text-blue-300 transition-colors">INICIO</Link>
-            <Link href="/artesanos" className="text-white font-semibold hover:text-blue-300 transition-colors">ARTESANOS</Link>
-            <Link href="/galeria" className="text-white font-semibold hover:text-blue-300 transition-colors">GALERÍA</Link>
-            <Link href="/contacto" className="text-white font-semibold hover:text-blue-300 transition-colors underline">CONTACTO</Link>
-          </div>
-        </div>
-        <div className="flex gap-4">
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-blue-300 transition-colors">
-            <FaFacebook size={22} />
-          </a>
-          <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-pink-300 transition-colors">
-            <FaInstagram size={22} />
-          </a>
-          <a href="https://wa.me/1234567890" target="_blank" rel="noreferrer" className="hover:text-green-300 transition-colors">
-            <FaWhatsapp size={22} />
-          </a>
-        </div>
-      </nav>
       {/* Formulario de contacto */}
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
         <div className="bg-white/95 rounded-2xl shadow-2xl p-10 max-w-xl w-full">

@@ -45,19 +45,26 @@ export default function CarritoPage() {
         <div className="text-blue-700">Tu carrito está vacío.</div>
       ) : (
         <>
-          <ul>
+          <div className="grid gap-4">
             {carrito.map((item) => (
-              <li key={item.id} className="mb-2 flex justify-between items-center">
-                <span>{item.nombre} x {item.cantidad}</span>
-                <span>
-                  ${item.precio * item.cantidad}
-                  <button onClick={() => eliminar(item.id)} className="ml-4 text-red-600 hover:underline">Eliminar</button>
-                </span>
-              </li>
+              <div key={item.id} className="bg-white shadow-md rounded-lg p-4 flex justify-between items-center transition-transform transform hover:scale-105">
+                <div>
+                  <div className="font-semibold text-blue-900">{item.nombre}</div>
+                  <div className="text-gray-700">Cantidad: {item.cantidad}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-lg font-bold text-blue-900">${item.precio * item.cantidad}</div>
+                  <button onClick={() => eliminar(item.id)} className="mt-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
           <div className="mt-4 text-lg font-bold text-blue-900">Total: ${total}</div>
-          <button className="mt-6 bg-blue-700 text-white px-6 py-2 rounded">Proceder al pago</button>
+          <button className="mt-6 bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition-colors">
+            Proceder al pago
+          </button>
         </>
       )}
       <div className="mt-8 text-blue-700">

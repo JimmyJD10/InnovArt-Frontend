@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link'
-import { FaStar, FaSearch, FaBoxOpen, FaMapMarkerAlt, FaChevronLeft, FaChevronRight, FaArrowLeft } from 'react-icons/fa'
+import { FaStar, FaSearch, FaBoxOpen, FaMapMarkerAlt, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 import { API_URL } from '../../services/api'
 import StatusMessage from '../../components/StatusMessage'
@@ -102,7 +102,7 @@ export default function ArtesanosPage() {
     try { portafolio = a.portafolio ? JSON.parse(a.portafolio) : [] } catch {}
 
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center hover:shadow-blue-200 transition-shadow relative">
+      <div className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center hover:shadow-blue-200 transition-shadow relative border border-blue-300">
         <img src={a.foto_perfil || '/default-profile.png'} alt={a.nombre_completo} className="h-20 w-20 rounded-full object-cover mb-2 border-2 border-blue-200" />
         <div className="font-bold text-blue-900 text-lg">{a.nombre_completo}</div>
         <div className="flex items-center gap-2 text-blue-800 mt-1">
@@ -142,23 +142,6 @@ export default function ArtesanosPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-sky-100 to-blue-200">
-      {/* Barra de navegación anclada */}
-      <nav className="w-full bg-blue-900 shadow-lg flex items-center justify-between px-8 py-4 z-30 sticky top-0 left-0">
-        <div className="flex items-center gap-6">
-          <button
-            onClick={() => router.back()}
-            className="text-white font-semibold hover:text-blue-300 transition-colors flex items-center gap-2 bg-transparent border-none outline-none"
-            style={{ background: 'none', border: 'none', padding: 0 }}
-            title="Volver"
-          >
-            <FaArrowLeft className="mr-1" /> Volver
-          </button>
-          <Link href="/" className="text-white font-semibold hover:text-blue-300 transition-colors">INICIO</Link>
-          <Link href="/artesanos" className="text-white font-semibold hover:text-blue-300 transition-colors">ARTESANOS</Link>
-          <Link href="/galeria" className="text-white font-semibold hover:text-blue-300 transition-colors">GALERÍA</Link>
-          <Link href="/contacto" className="text-white font-semibold hover:text-blue-300 transition-colors">CONTACTO</Link>
-        </div>
-      </nav>
       {/* Encabezado */}
       <div className="max-w-7xl mx-auto px-4 mb-6 mt-8">
         <h1 className="text-3xl font-extrabold text-blue-900 mb-2">Artesanos disponibles</h1>
